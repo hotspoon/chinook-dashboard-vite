@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/form";
 import { LoginSchema } from "@/schema/auth";
 import { login } from "@/services/authService";
+import { toast } from "sonner";
+import { useNavigate } from "@tanstack/react-router";
 
 type LoginFormValues = z.infer<typeof LoginSchema>;
 
@@ -29,6 +31,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const navigate = useNavigate();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -38,10 +41,13 @@ export function LoginForm({
   });
 
   const onSubmit = async (values: LoginFormValues) => {
-    // handle login here
-    const res = await login(values);
-    // show errors if needed
-    console.log(res);
+    try {
+      const res = await login(values);
+      console.log(res);
+      navigate({ to: "/dashboard" });
+    } catch (err: any) {
+      toast.error(err.message);
+    }
   };
 
   return (

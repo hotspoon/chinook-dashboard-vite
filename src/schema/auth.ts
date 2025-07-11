@@ -14,3 +14,7 @@ export interface LoginResponse {
   token: string;
   refresh_token: string;
 }
+
+export interface ErrorResponse {
+  error: string;
+}

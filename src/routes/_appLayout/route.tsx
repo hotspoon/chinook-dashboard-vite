@@ -13,11 +13,24 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { isAuthenticated } from "@/lib/auth/auth";
 
-import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_appLayout")({
   component: AppLayoutComponent,
+  beforeLoad: async ({ location }) => {
+    console.log("beforeLoad in applayout");
+    const authenticated = false;
+    if (!authenticated) {
+      throw redirect({
+        to: "/login",
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  },
 });
 
 function AppLayoutComponent() {

@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/sonner";
 import { createRootRoute, Outlet, HeadContent } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
@@ -20,6 +21,7 @@ export const Route = createRootRoute({
     <>
       <HeadContent />
       <Outlet />
+      <Toaster position="top-center" />
       <TanStackRouterDevtools />
     </>
   ),

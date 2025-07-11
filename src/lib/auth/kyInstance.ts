@@ -1,5 +1,5 @@
 import ky from "ky";
-import getAuthToken from "./getAuthToken";
+import { isAuthenticated } from "./auth";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -10,7 +10,7 @@ const kyInstance = ky.create({
   hooks: {
     beforeRequest: [
       (request) => {
-        const token = getAuthToken();
+        const token = isAuthenticated();
         if (token) {
           request.headers.set("Authorization", `Bearer ${token}`);
         }
