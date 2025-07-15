@@ -21,9 +21,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { LoginSchema } from "@/schema/auth";
-import { login } from "@/services/authService";
+import { login } from "@/services/auth.service";
 import { toast } from "sonner";
 import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 
 type LoginFormValues = z.infer<typeof LoginSchema>;
 
@@ -31,6 +32,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
@@ -42,11 +44,14 @@ export function LoginForm({
 
   const onSubmit = async (values: LoginFormValues) => {
     try {
+      setIsLoading(true);
       const res = await login(values);
       console.log(res);
       navigate({ to: "/dashboard" });
     } catch (err: any) {
       toast.error(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -104,7 +109,7 @@ export function LoginForm({
                 )}
               />
               <div className="flex flex-col gap-3">
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" disabled={isLoading}>
                   Login
                 </Button>
               </div>

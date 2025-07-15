@@ -18,142 +18,88 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
+interface NavItem {
+  title: string;
+  url: string;
+  isActive?: boolean; // optional
+}
+
+interface NavSection {
+  title: string;
+  url: string;
+  items: NavItem[];
+}
+
+interface AppData {
+  versions: string[];
+  navMain: NavSection[];
+}
+
 // This is sample data.
-const data = {
+const data: AppData = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
-      title: "Getting Started",
+      title: "Menu",
       url: "#",
       items: [
         {
-          title: "Installation",
-          url: "#",
-        },
-        {
-          title: "Project Structure",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Building Your Application",
-      url: "#",
-      items: [
-        {
-          title: "Routing",
-          url: "#",
-        },
-        {
-          title: "Data Fetching",
-          url: "#",
+          title: "Dashboard",
+          url: "/dashboard",
           isActive: true,
         },
+      ],
+    },
+
+    {
+      title: "Music Library",
+      url: "#",
+      items: [
         {
-          title: "Rendering",
-          url: "#",
+          title: "Artists",
+          url: "/artists",
         },
         {
-          title: "Caching",
-          url: "#",
+          title: "Albums",
+          url: "/albums",
         },
         {
-          title: "Styling",
-          url: "#",
+          title: "Tracks",
+          url: "/tracks",
         },
         {
-          title: "Optimizing",
-          url: "#",
+          title: "Genres",
+          url: "/genres",
         },
         {
-          title: "Configuring",
-          url: "#",
+          title: "Playlists",
+          url: "/playlists",
         },
         {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
-          url: "#",
+          title: "Media Types",
+          url: "/media-types",
         },
       ],
     },
     {
-      title: "API Reference",
+      title: "Business",
       url: "#",
       items: [
         {
-          title: "Components",
-          url: "#",
+          title: "Customers",
+          url: "/customers",
         },
         {
-          title: "File Conventions",
-          url: "#",
+          title: "Invoices",
+          url: "/invoices",
         },
         {
-          title: "Functions",
-          url: "#",
+          title: "Employees",
+          url: "/employees",
         },
         {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Community",
-      url: "#",
-      items: [
-        {
-          title: "Contribution Guide",
-          url: "#",
+          title: "Reports",
+          url: "/reports",
         },
       ],
     },

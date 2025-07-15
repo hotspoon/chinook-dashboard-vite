@@ -4,6 +4,8 @@ import type { LoginResponse } from "@/schema/auth";
 import Cookies from "js-cookie";
 import { HTTPError } from "ky";
 
+const isProduction = import.meta.env.MODE === "production";
+
 export const login = async (credentials: {
   username: string;
   password: string;
@@ -13,8 +15,8 @@ export const login = async (credentials: {
 
     Cookies.set("token", response.token, {
       expires: 7,
-      secure: true,
-      sameSite: "strict",
+      secure: isProduction,
+      sameSite: "lax",
     });
 
     return response;

@@ -18,3 +18,17 @@ export interface LoginResponse {
 export interface ErrorResponse {
   error: string;
 }
+
+export interface MeResponse {
+  id: number;
+  username: string;
+  email: string;
+  authenticated: boolean;
+}
+
+export type AuthUser = {
+  id: number;
+  username: string;
+  email: string;
+  authenticated: boolean;
+};
