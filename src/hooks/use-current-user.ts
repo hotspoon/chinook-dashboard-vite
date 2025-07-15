@@ -2,7 +2,7 @@ import { AuthApi } from "@/api/authApi";
 import type { AuthUser } from "@/schema/auth";
 import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 
-export function useAuth(): UseQueryResult<AuthUser | null, unknown> {
+export function useCurrentUser(): UseQueryResult<AuthUser | null, unknown> {
   return useQuery({
     queryKey: ["currentUser"],
     queryFn: AuthApi.getCurrentUser,

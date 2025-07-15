@@ -1,8 +1,18 @@
+import { NotFoundPage } from "@/components/common/not-found-page";
 import { Toaster } from "@/components/ui/sonner";
-import { createRootRoute, Outlet, HeadContent } from "@tanstack/react-router";
+import type { AuthContext } from "@/context/AuthContext";
+import {
+  Outlet,
+  HeadContent,
+  createRootRouteWithContext,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
-export const Route = createRootRoute({
+interface MyRouterContext {
+  auth: AuthContext;
+}
+
+export const Route = createRootRouteWithContext<MyRouterContext>()({
   head: () => ({
     meta: [
       {
@@ -25,4 +35,11 @@ export const Route = createRootRoute({
       <TanStackRouterDevtools />
     </>
   ),
+  notFoundComponent: () => {
+    return (
+      <>
+        <NotFoundPage />
+      </>
+    );
+  },
 });

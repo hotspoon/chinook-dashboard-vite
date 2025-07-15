@@ -9,6 +9,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,8 +38,9 @@ import { ChevronDown, LogOut } from "lucide-react";
 export const Route = createFileRoute("/_appLayout")({
   component: AppLayoutComponent,
   beforeLoad: async ({ context, location }) => {
-    const user = await AuthApi.getCurrentUser();
-    if (!user?.authenticated) {
+    // const user = await AuthApi.getCurrentUser();
+
+    if (!context.auth.user.authenticated) {
       throw redirect({
         to: "/login",
         search: {
@@ -82,7 +84,7 @@ function AppLayoutComponent() {
             <div className="flex items-center ml-auto">
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <div className="flex items-center gap-2 bg-white px-4 py-1 border-2 rounded-xl border-[#E4E4E7]">
+                  <div className="flex items-center gap-2 bg-white px-4 py-1 border-2 rounded-xl border-[#E4E4E7] hover:cursor-pointer">
                     <Avatar className="w-6 h-6">
                       <AvatarImage src="/assets/images/avatar_pg_internal.png" />
                       <AvatarFallback>CN</AvatarFallback>
@@ -100,16 +102,10 @@ function AppLayoutComponent() {
                     className="gap-2 hover:cursor-pointer"
                     onClick={handleLogout}
                   >
-                    <button
-                      className={cn(
-                        "flex items-center justify-between gap-2  text-[#CB3A31] w-full",
-                      )}
-                    >
-                      <span>Keluar Akun</span>
-                      <span className="text-xl">
-                        <LogOut />
-                      </span>
-                    </button>
+                    <Button variant="outline">
+                      <LogOut />
+                      Keluar
+                    </Button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

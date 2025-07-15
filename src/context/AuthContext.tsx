@@ -1,25 +1,33 @@
-import { useAuth } from "@/hooks/use-auth";
-import type { UseQueryResult } from "@tanstack/react-query";
-import { createContext, useContext } from "react";
+import type { MeResponse } from "@/schema/auth";
+import * as React from "react";
 
-// Use your actual data type instead of unknown if possible
-type AuthContextType = UseQueryResult<any, unknown>;
-
-const AuthContext = createContext<AuthContextType | null>(null);
-
-interface AuthProviderProps {
-  children: React.ReactNode;
+export interface AuthContext {
+  user: MeResponse;
 }
 
-export function AuthProvider({ children }: AuthProviderProps) {
-  const auth = useAuth();
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+const AuthContext = React.createContext<AuthContext | null>(null);
+
+function getStoredUser() {
+  return {
+    id: 2,
+    username: "john123",
+    email: "john@example.com",
+    authenticated: true,
+  };
 }
 
-export function useAuthContext() {
-  const context = useContext(AuthContext);
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, _] = React.useState<MeResponse>(getStoredUser());
+
+  return (
+    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  const context = React.useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuthContext must be used within an AuthProvider");
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }
