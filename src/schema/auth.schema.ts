@@ -25,10 +25,3 @@ export interface MeResponse {
   email: string;
   authenticated: boolean;
 }
-
-export type AuthUser = {
-  id: number;
-  username: string;
-  email: string;
-  authenticated: boolean;
-};

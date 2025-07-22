@@ -1,4 +1,8 @@
-import type { Credentials, LoginResponse, MeResponse } from "@/schema/auth";
+import type {
+  Credentials,
+  LoginResponse,
+  MeResponse,
+} from "@/schema/auth.schema";
 import kyInstance from "../lib/auth/kyInstance";
 
 export class AuthApi {

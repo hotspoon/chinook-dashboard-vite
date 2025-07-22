@@ -17,23 +17,8 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-
-interface NavItem {
-  title: string;
-  url: string;
-  isActive?: boolean; // optional
-}
-
-interface NavSection {
-  title: string;
-  url: string;
-  items: NavItem[];
-}
-
-interface AppData {
-  versions: string[];
-  navMain: NavSection[];
-}
+import type { AppData } from "@/schema/navigation.schema";
+import { Link } from "@tanstack/react-router";
 
 // This is sample data.
 const data: AppData = {
@@ -77,7 +62,7 @@ const data: AppData = {
         },
         {
           title: "Media Types",
-          url: "/media-types",
+          url: "/media_types",
         },
       ],
     },
@@ -134,7 +119,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     {item.items.map((item) => (
                       <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild isActive={item.isActive}>
-                          <a href={item.url}>{item.title}</a>
+                          <Link to={item.url}>{item.title}</Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}

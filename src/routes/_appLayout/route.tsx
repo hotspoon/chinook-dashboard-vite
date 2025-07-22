@@ -1,4 +1,4 @@
-import { AuthApi } from "@/api/authApi";
+// import { AuthApi } from "@/api/authApi";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -23,8 +23,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { isAuthenticated } from "@/lib/auth/auth";
-import { cn } from "@/lib/utils";
+import { authCheck } from "@/lib/auth/auth";
 
 import {
   Outlet,
@@ -37,10 +36,10 @@ import { ChevronDown, LogOut } from "lucide-react";
 
 export const Route = createFileRoute("/_appLayout")({
   component: AppLayoutComponent,
-  beforeLoad: async ({ context, location }) => {
-    // const user = await AuthApi.getCurrentUser();
+  beforeLoad: async ({ location }) => {
+    const isAuthenticated = await authCheck();
 
-    if (!context.auth.user.authenticated) {
+    if (!isAuthenticated) {
       throw redirect({
         to: "/login",
         search: {
@@ -52,8 +51,9 @@ export const Route = createFileRoute("/_appLayout")({
 });
 
 function AppLayoutComponent() {
-  // const { username } = useLoaderData({ from: "/_appLayout" });
-  const username = "John Doe";
+  const user = {
+    username: "John Doe",
+  };
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -71,13 +71,11 @@ function AppLayoutComponent() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Building Your Application
-                  </BreadcrumbLink>
+                  <BreadcrumbLink href="#">Menu</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -95,7 +93,7 @@ function AppLayoutComponent() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-full z-[999]">
                   <DropdownMenuItem className="gap-2 ">
-                    <p className="text-gray-500">{username}</p>
+                    <p className="text-gray-500">{user?.username}</p>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem

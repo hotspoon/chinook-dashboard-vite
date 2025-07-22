@@ -11,10 +11,20 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthLayoutRouteRouteImport } from './routes/_authLayout/route'
 import { Route as AppLayoutRouteRouteImport } from './routes/_appLayout/route'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppLayoutIndexRouteImport } from './routes/_appLayout/index'
 import { Route as AuthLayoutSignUpRouteImport } from './routes/_authLayout/sign-up'
 import { Route as AuthLayoutLoginRouteImport } from './routes/_authLayout/login'
+import { Route as AppLayoutTracksRouteImport } from './routes/_appLayout/tracks'
+import { Route as AppLayoutReportsRouteImport } from './routes/_appLayout/reports'
+import { Route as AppLayoutPlaylistsRouteImport } from './routes/_appLayout/playlists'
+import { Route as AppLayoutMedia_typesRouteImport } from './routes/_appLayout/media_types'
+import { Route as AppLayoutInvoicesRouteImport } from './routes/_appLayout/invoices'
+import { Route as AppLayoutGenresRouteImport } from './routes/_appLayout/genres'
+import { Route as AppLayoutEmployeesRouteImport } from './routes/_appLayout/employees'
 import { Route as AppLayoutDashboardRouteImport } from './routes/_appLayout/dashboard'
+import { Route as AppLayoutCustomersRouteImport } from './routes/_appLayout/customers'
+import { Route as AppLayoutArtistsRouteImport } from './routes/_appLayout/artists'
+import { Route as AppLayoutAlbumsRouteImport } from './routes/_appLayout/albums'
 import { Route as AppLayoutAboutRouteImport } from './routes/_appLayout/about'
 
 const AuthLayoutRouteRoute = AuthLayoutRouteRouteImport.update({
@@ -25,10 +35,10 @@ const AppLayoutRouteRoute = AppLayoutRouteRouteImport.update({
   id: '/_appLayout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const AppLayoutIndexRoute = AppLayoutIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppLayoutRouteRoute,
 } as any)
 const AuthLayoutSignUpRoute = AuthLayoutSignUpRouteImport.update({
   id: '/sign-up',
@@ -40,9 +50,59 @@ const AuthLayoutLoginRoute = AuthLayoutLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthLayoutRouteRoute,
 } as any)
+const AppLayoutTracksRoute = AppLayoutTracksRouteImport.update({
+  id: '/tracks',
+  path: '/tracks',
+  getParentRoute: () => AppLayoutRouteRoute,
+} as any)
+const AppLayoutReportsRoute = AppLayoutReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AppLayoutRouteRoute,
+} as any)
+const AppLayoutPlaylistsRoute = AppLayoutPlaylistsRouteImport.update({
+  id: '/playlists',
+  path: '/playlists',
+  getParentRoute: () => AppLayoutRouteRoute,
+} as any)
+const AppLayoutMedia_typesRoute = AppLayoutMedia_typesRouteImport.update({
+  id: '/media_types',
+  path: '/media_types',
+  getParentRoute: () => AppLayoutRouteRoute,
+} as any)
+const AppLayoutInvoicesRoute = AppLayoutInvoicesRouteImport.update({
+  id: '/invoices',
+  path: '/invoices',
+  getParentRoute: () => AppLayoutRouteRoute,
+} as any)
+const AppLayoutGenresRoute = AppLayoutGenresRouteImport.update({
+  id: '/genres',
+  path: '/genres',
+  getParentRoute: () => AppLayoutRouteRoute,
+} as any)
+const AppLayoutEmployeesRoute = AppLayoutEmployeesRouteImport.update({
+  id: '/employees',
+  path: '/employees',
+  getParentRoute: () => AppLayoutRouteRoute,
+} as any)
 const AppLayoutDashboardRoute = AppLayoutDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AppLayoutRouteRoute,
+} as any)
+const AppLayoutCustomersRoute = AppLayoutCustomersRouteImport.update({
+  id: '/customers',
+  path: '/customers',
+  getParentRoute: () => AppLayoutRouteRoute,
+} as any)
+const AppLayoutArtistsRoute = AppLayoutArtistsRouteImport.update({
+  id: '/artists',
+  path: '/artists',
+  getParentRoute: () => AppLayoutRouteRoute,
+} as any)
+const AppLayoutAlbumsRoute = AppLayoutAlbumsRouteImport.update({
+  id: '/albums',
+  path: '/albums',
   getParentRoute: () => AppLayoutRouteRoute,
 } as any)
 const AppLayoutAboutRoute = AppLayoutAboutRouteImport.update({
@@ -52,47 +112,116 @@ const AppLayoutAboutRoute = AppLayoutAboutRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/about': typeof AppLayoutAboutRoute
+  '/albums': typeof AppLayoutAlbumsRoute
+  '/artists': typeof AppLayoutArtistsRoute
+  '/customers': typeof AppLayoutCustomersRoute
   '/dashboard': typeof AppLayoutDashboardRoute
+  '/employees': typeof AppLayoutEmployeesRoute
+  '/genres': typeof AppLayoutGenresRoute
+  '/invoices': typeof AppLayoutInvoicesRoute
+  '/media_types': typeof AppLayoutMedia_typesRoute
+  '/playlists': typeof AppLayoutPlaylistsRoute
+  '/reports': typeof AppLayoutReportsRoute
+  '/tracks': typeof AppLayoutTracksRoute
   '/login': typeof AuthLayoutLoginRoute
   '/sign-up': typeof AuthLayoutSignUpRoute
+  '/': typeof AppLayoutIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/about': typeof AppLayoutAboutRoute
+  '/albums': typeof AppLayoutAlbumsRoute
+  '/artists': typeof AppLayoutArtistsRoute
+  '/customers': typeof AppLayoutCustomersRoute
   '/dashboard': typeof AppLayoutDashboardRoute
+  '/employees': typeof AppLayoutEmployeesRoute
+  '/genres': typeof AppLayoutGenresRoute
+  '/invoices': typeof AppLayoutInvoicesRoute
+  '/media_types': typeof AppLayoutMedia_typesRoute
+  '/playlists': typeof AppLayoutPlaylistsRoute
+  '/reports': typeof AppLayoutReportsRoute
+  '/tracks': typeof AppLayoutTracksRoute
   '/login': typeof AuthLayoutLoginRoute
   '/sign-up': typeof AuthLayoutSignUpRoute
+  '/': typeof AppLayoutIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/_appLayout': typeof AppLayoutRouteRouteWithChildren
   '/_authLayout': typeof AuthLayoutRouteRouteWithChildren
   '/_appLayout/about': typeof AppLayoutAboutRoute
+  '/_appLayout/albums': typeof AppLayoutAlbumsRoute
+  '/_appLayout/artists': typeof AppLayoutArtistsRoute
+  '/_appLayout/customers': typeof AppLayoutCustomersRoute
   '/_appLayout/dashboard': typeof AppLayoutDashboardRoute
+  '/_appLayout/employees': typeof AppLayoutEmployeesRoute
+  '/_appLayout/genres': typeof AppLayoutGenresRoute
+  '/_appLayout/invoices': typeof AppLayoutInvoicesRoute
+  '/_appLayout/media_types': typeof AppLayoutMedia_typesRoute
+  '/_appLayout/playlists': typeof AppLayoutPlaylistsRoute
+  '/_appLayout/reports': typeof AppLayoutReportsRoute
+  '/_appLayout/tracks': typeof AppLayoutTracksRoute
   '/_authLayout/login': typeof AuthLayoutLoginRoute
   '/_authLayout/sign-up': typeof AuthLayoutSignUpRoute
+  '/_appLayout/': typeof AppLayoutIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/dashboard' | '/login' | '/sign-up'
+  fullPaths:
+    | '/about'
+    | '/albums'
+    | '/artists'
+    | '/customers'
+    | '/dashboard'
+    | '/employees'
+    | '/genres'
+    | '/invoices'
+    | '/media_types'
+    | '/playlists'
+    | '/reports'
+    | '/tracks'
+    | '/login'
+    | '/sign-up'
+    | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/dashboard' | '/login' | '/sign-up'
+  to:
+    | '/about'
+    | '/albums'
+    | '/artists'
+    | '/customers'
+    | '/dashboard'
+    | '/employees'
+    | '/genres'
+    | '/invoices'
+    | '/media_types'
+    | '/playlists'
+    | '/reports'
+    | '/tracks'
+    | '/login'
+    | '/sign-up'
+    | '/'
   id:
     | '__root__'
-    | '/'
     | '/_appLayout'
     | '/_authLayout'
     | '/_appLayout/about'
+    | '/_appLayout/albums'
+    | '/_appLayout/artists'
+    | '/_appLayout/customers'
     | '/_appLayout/dashboard'
+    | '/_appLayout/employees'
+    | '/_appLayout/genres'
+    | '/_appLayout/invoices'
+    | '/_appLayout/media_types'
+    | '/_appLayout/playlists'
+    | '/_appLayout/reports'
+    | '/_appLayout/tracks'
     | '/_authLayout/login'
     | '/_authLayout/sign-up'
+    | '/_appLayout/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   AppLayoutRouteRoute: typeof AppLayoutRouteRouteWithChildren
   AuthLayoutRouteRoute: typeof AuthLayoutRouteRouteWithChildren
 }
@@ -113,12 +242,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLayoutRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_appLayout/': {
+      id: '/_appLayout/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppLayoutIndexRouteImport
+      parentRoute: typeof AppLayoutRouteRoute
     }
     '/_authLayout/sign-up': {
       id: '/_authLayout/sign-up'
@@ -134,11 +263,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLayoutLoginRouteImport
       parentRoute: typeof AuthLayoutRouteRoute
     }
+    '/_appLayout/tracks': {
+      id: '/_appLayout/tracks'
+      path: '/tracks'
+      fullPath: '/tracks'
+      preLoaderRoute: typeof AppLayoutTracksRouteImport
+      parentRoute: typeof AppLayoutRouteRoute
+    }
+    '/_appLayout/reports': {
+      id: '/_appLayout/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AppLayoutReportsRouteImport
+      parentRoute: typeof AppLayoutRouteRoute
+    }
+    '/_appLayout/playlists': {
+      id: '/_appLayout/playlists'
+      path: '/playlists'
+      fullPath: '/playlists'
+      preLoaderRoute: typeof AppLayoutPlaylistsRouteImport
+      parentRoute: typeof AppLayoutRouteRoute
+    }
+    '/_appLayout/media_types': {
+      id: '/_appLayout/media_types'
+      path: '/media_types'
+      fullPath: '/media_types'
+      preLoaderRoute: typeof AppLayoutMedia_typesRouteImport
+      parentRoute: typeof AppLayoutRouteRoute
+    }
+    '/_appLayout/invoices': {
+      id: '/_appLayout/invoices'
+      path: '/invoices'
+      fullPath: '/invoices'
+      preLoaderRoute: typeof AppLayoutInvoicesRouteImport
+      parentRoute: typeof AppLayoutRouteRoute
+    }
+    '/_appLayout/genres': {
+      id: '/_appLayout/genres'
+      path: '/genres'
+      fullPath: '/genres'
+      preLoaderRoute: typeof AppLayoutGenresRouteImport
+      parentRoute: typeof AppLayoutRouteRoute
+    }
+    '/_appLayout/employees': {
+      id: '/_appLayout/employees'
+      path: '/employees'
+      fullPath: '/employees'
+      preLoaderRoute: typeof AppLayoutEmployeesRouteImport
+      parentRoute: typeof AppLayoutRouteRoute
+    }
     '/_appLayout/dashboard': {
       id: '/_appLayout/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AppLayoutDashboardRouteImport
+      parentRoute: typeof AppLayoutRouteRoute
+    }
+    '/_appLayout/customers': {
+      id: '/_appLayout/customers'
+      path: '/customers'
+      fullPath: '/customers'
+      preLoaderRoute: typeof AppLayoutCustomersRouteImport
+      parentRoute: typeof AppLayoutRouteRoute
+    }
+    '/_appLayout/artists': {
+      id: '/_appLayout/artists'
+      path: '/artists'
+      fullPath: '/artists'
+      preLoaderRoute: typeof AppLayoutArtistsRouteImport
+      parentRoute: typeof AppLayoutRouteRoute
+    }
+    '/_appLayout/albums': {
+      id: '/_appLayout/albums'
+      path: '/albums'
+      fullPath: '/albums'
+      preLoaderRoute: typeof AppLayoutAlbumsRouteImport
       parentRoute: typeof AppLayoutRouteRoute
     }
     '/_appLayout/about': {
@@ -153,12 +352,34 @@ declare module '@tanstack/react-router' {
 
 interface AppLayoutRouteRouteChildren {
   AppLayoutAboutRoute: typeof AppLayoutAboutRoute
+  AppLayoutAlbumsRoute: typeof AppLayoutAlbumsRoute
+  AppLayoutArtistsRoute: typeof AppLayoutArtistsRoute
+  AppLayoutCustomersRoute: typeof AppLayoutCustomersRoute
   AppLayoutDashboardRoute: typeof AppLayoutDashboardRoute
+  AppLayoutEmployeesRoute: typeof AppLayoutEmployeesRoute
+  AppLayoutGenresRoute: typeof AppLayoutGenresRoute
+  AppLayoutInvoicesRoute: typeof AppLayoutInvoicesRoute
+  AppLayoutMedia_typesRoute: typeof AppLayoutMedia_typesRoute
+  AppLayoutPlaylistsRoute: typeof AppLayoutPlaylistsRoute
+  AppLayoutReportsRoute: typeof AppLayoutReportsRoute
+  AppLayoutTracksRoute: typeof AppLayoutTracksRoute
+  AppLayoutIndexRoute: typeof AppLayoutIndexRoute
 }
 
 const AppLayoutRouteRouteChildren: AppLayoutRouteRouteChildren = {
   AppLayoutAboutRoute: AppLayoutAboutRoute,
+  AppLayoutAlbumsRoute: AppLayoutAlbumsRoute,
+  AppLayoutArtistsRoute: AppLayoutArtistsRoute,
+  AppLayoutCustomersRoute: AppLayoutCustomersRoute,
   AppLayoutDashboardRoute: AppLayoutDashboardRoute,
+  AppLayoutEmployeesRoute: AppLayoutEmployeesRoute,
+  AppLayoutGenresRoute: AppLayoutGenresRoute,
+  AppLayoutInvoicesRoute: AppLayoutInvoicesRoute,
+  AppLayoutMedia_typesRoute: AppLayoutMedia_typesRoute,
+  AppLayoutPlaylistsRoute: AppLayoutPlaylistsRoute,
+  AppLayoutReportsRoute: AppLayoutReportsRoute,
+  AppLayoutTracksRoute: AppLayoutTracksRoute,
+  AppLayoutIndexRoute: AppLayoutIndexRoute,
 }
 
 const AppLayoutRouteRouteWithChildren = AppLayoutRouteRoute._addFileChildren(
@@ -180,7 +401,6 @@ const AuthLayoutRouteRouteWithChildren = AuthLayoutRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   AppLayoutRouteRoute: AppLayoutRouteRouteWithChildren,
   AuthLayoutRouteRoute: AuthLayoutRouteRouteWithChildren,
 }

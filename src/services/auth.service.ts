@@ -1,10 +1,10 @@
 // src/services/authService.ts
 import { AuthApi } from "@/api/authApi";
-import type { LoginResponse } from "@/schema/auth";
+import type { LoginResponse } from "@/schema/auth.schema";
 import Cookies from "js-cookie";
 import { HTTPError } from "ky";
 
-const isProduction = import.meta.env.MODE === "production";
+// const isProduction = import.meta.env.MODE === "production";
 
 export const login = async (credentials: {
   username: string;
@@ -15,7 +15,7 @@ export const login = async (credentials: {
 
     Cookies.set("token", response.token, {
       expires: 7,
-      secure: isProduction,
+      secure: false,
       sameSite: "lax",
     });
 

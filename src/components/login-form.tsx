@@ -20,7 +20,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { LoginSchema } from "@/schema/auth";
+import { LoginSchema } from "@/schema/auth.schema";
 import { login } from "@/services/auth.service";
 import { toast } from "sonner";
 import { useNavigate } from "@tanstack/react-router";
@@ -45,8 +45,7 @@ export function LoginForm({
   const onSubmit = async (values: LoginFormValues) => {
     try {
       setIsLoading(true);
-      const res = await login(values);
-      console.log(res);
+      await login(values);
       navigate({ to: "/dashboard" });
     } catch (err: any) {
       toast.error(err.message);

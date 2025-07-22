@@ -1,5 +1,13 @@
-import type { MeResponse } from "@/schema/auth";
 import * as React from "react";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import type { MeResponse } from "@/schema/auth.schema";
+
+const guestUser: MeResponse = {
+  id: 0,
+  username: "",
+  email: "",
+  authenticated: false,
+};
 
 export interface AuthContext {
   user: MeResponse;
@@ -7,17 +15,11 @@ export interface AuthContext {
 
 const AuthContext = React.createContext<AuthContext | null>(null);
 
-function getStoredUser() {
-  return {
-    id: 2,
-    username: "john123",
-    email: "john@example.com",
-    authenticated: true,
-  };
-}
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, _] = React.useState<MeResponse>(getStoredUser());
+  const { data } = useCurrentUser();
+
+  // Always provide a MeResponse, never null
+  const user: MeResponse = data ?? guestUser;
 
   return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>

@@ -1,12 +1,17 @@
 import { z } from "zod";
-import { LoginSchema } from "@/schema/auth";
+import { LoginSchema } from "@/schema/auth.schema";
 import Cookies from "js-cookie";
+import { AuthApi } from "@/api/authApi";
 
 export type LoginInput = z.infer<typeof LoginSchema>;
 
-export function isAuthenticated() {
-  const token = Cookies.get("token");
-  return !!token;
+export async function authCheck() {
+  const res = await AuthApi.getCurrentUser();
+  if (res?.authenticated) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 export function getToken() {
