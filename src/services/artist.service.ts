@@ -1,14 +1,24 @@
-import type { Artist } from "@/schema/artist.schema";
+import type { Artist, PaginatedArtistsResponse } from "@/schema/artist.schema";
 import kyInstance from "@/lib/auth/kyInstance";
 
 export class ArtistService {
   static kyInstance = kyInstance;
   static endpoint = "artists";
 
-  static async fetchAll(): Promise<Artist[]> {
+  static async fetchPaginated({
+    limit,
+    offset,
+    name,
+  }: {
+    limit: number;
+    offset: number;
+    name?: string;
+  }): Promise<PaginatedArtistsResponse> {
+    const params: Record<string, string | number> = { limit, offset };
+    if (name) params.name = name;
     return await ArtistService.kyInstance
-      .get(ArtistService.endpoint)
-      .json<Artist[]>();
+      .get(ArtistService.endpoint, { searchParams: params })
+      .json<PaginatedArtistsResponse>();
   }
 
   static async fetchById(id: number): Promise<Artist | null> {

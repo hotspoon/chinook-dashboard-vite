@@ -8,22 +8,22 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-// Removed: import { useDebounce } from "@/hooks/use-debounce"; // No longer directly needed here for the query
 import { ArtistService } from "@/services/artist.service";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { z } from "zod"; // Import zod for schema validation
-import { useState, useEffect } from "react"; // Added useEffect for debouncing the search input
+import { z } from "zod";
+import { useState, useEffect } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-// Define a search schema for your route
 const artistSearchSchema = z.object({
-  // query: z.string().catch(""), // 'catch("")' makes the 'query' optional and defaults to an empty string if not present
   query: z.string().trim().optional().default(""),
 });
 
+const PAGE_SIZE = 50;
+
 export const Route = createFileRoute("/_appLayout/artists")({
   component: RouteComponent,
-  validateSearch: artistSearchSchema, // Apply the search schema to the route
+  validateSearch: artistSearchSchema,
 });
 
 function RouteComponent() {
@@ -36,11 +36,8 @@ function RouteComponent() {
 }
 
 function ArtistGrid() {
-  // Use TanStack Router's useSearch hook to get and update search params
   const { query } = Route.useSearch();
-  const navigate = Route.useNavigate(); // Get the navigate function from the route
-
-  // Local state for the input field to allow immediate feedback while typing
+  const navigate = Route.useNavigate();
   const [inputValue, setInputValue] = useState(query);
 
   useEffect(() => {
@@ -56,26 +53,31 @@ function ArtistGrid() {
         },
       });
     }, 300);
-
     return () => clearTimeout(handler);
   }, [inputValue, navigate]);
 
-  const {
-    data: artists = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["artists", query], // Use the debounced query from search params
-    queryFn: () =>
-      query ? ArtistService.fetchByName(query) : ArtistService.fetchAll(),
-  });
+  const { data, isLoading, isError, error, fetchNextPage, hasNextPage } =
+    useInfiniteQuery({
+      queryKey: ["artists", query],
+      queryFn: async ({ pageParam = 0 }) =>
+        ArtistService.fetchPaginated({
+          limit: PAGE_SIZE,
+          offset: pageParam,
+          name: query.trim() || undefined,
+        }),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage, allPages) => {
+        if (!lastPage.hasMore || lastPage.data.length === 0) return undefined;
+        return allPages.length * PAGE_SIZE;
+      },
+      refetchOnWindowFocus: false,
+    });
+
+  const artists = data ? data.pages.flatMap((page) => page.data) : [];
+  const nothingFound = !isLoading && artists.length === 0;
 
   if (isLoading) return <LoaderPage />;
-
   if (isError) return <ErrorPage message={error.message} />;
-
-  const nothingFound = artists.length === 0;
 
   return (
     <>
@@ -83,12 +85,13 @@ function ArtistGrid() {
         <Input
           type="text"
           placeholder="Search artists..."
-          value={inputValue} // Bind to local state for immediate feedback
-          onChange={(e) => setInputValue(e.target.value)} // Update local state on change
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
           className="mb-2 p-1 border rounded"
           autoFocus
         />
       </div>
+
       {nothingFound ? (
         <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
           <span className="text-4xl mb-2">😕</span>
@@ -99,17 +102,49 @@ function ArtistGrid() {
           </span>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {artists.map((artist) => (
-            <Card key={artist.ID}>
-              <CardHeader>
-                <CardTitle>{artist.Name}</CardTitle>
-                <CardDescription>Card Description</CardDescription>
-              </CardHeader>
-              <CardContent></CardContent>
-            </Card>
-          ))}
-        </div>
+        <InfiniteScroll
+          dataLength={artists.length}
+          next={fetchNextPage}
+          hasMore={!!hasNextPage}
+          loader={
+            <div className="text-center py-4 text-sm text-muted-foreground">
+              Loading more artists...
+            </div>
+          }
+          endMessage={
+            <div className="text-center py-4 text-sm text-muted-foreground">
+              No more artists.
+            </div>
+          }
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {artists.map((artist) => (
+              <Card
+                key={artist.ID}
+                className="hover:shadow-lg transition-shadow duration-300"
+              >
+                <CardHeader className="flex flex-col items-center text-center">
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                      artist.Name,
+                    )}&background=random&size=128`}
+                    alt={artist.Name}
+                    className="w-24 h-24 rounded-full object-cover mb-2"
+                  />
+                  <CardTitle className="text-lg font-semibold">
+                    {artist.Name}
+                  </CardTitle>
+                  <CardDescription>Musician</CardDescription>
+                </CardHeader>
+                <CardContent className="text-sm text-center">
+                  <button className="mt-2 px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 hover:cursor-pointer transition-colors duration-200">
+                    View Profile
+                  </button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </InfiniteScroll>
       )}
     </>
   );
