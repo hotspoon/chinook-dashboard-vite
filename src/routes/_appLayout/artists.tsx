@@ -14,9 +14,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const artistSearchSchema = z.object({
-  query: z.string().trim().optional().default(""),
+  query: z.string().trim().optional(),
 });
 
 const PAGE_SIZE = 50;
@@ -38,21 +39,23 @@ function RouteComponent() {
 function ArtistGrid() {
   const { query } = Route.useSearch();
   const navigate = Route.useNavigate();
-  const [inputValue, setInputValue] = useState(query);
+  const [inputValue, setInputValue] = useState(() => query ?? "");
 
   useEffect(() => {
     const handler = setTimeout(() => {
+      const newQuery = inputValue.trim();
       navigate({
-        search: (prev) => {
-          const newQuery = inputValue.trim();
+        search: (prev = {}) => {
           const currentQuery = (prev.query || "").trim();
           if (newQuery === currentQuery) return prev;
+
           return newQuery
             ? { ...prev, query: newQuery }
             : (({ query, ...rest }) => rest)(prev);
         },
       });
     }, 300);
+
     return () => clearTimeout(handler);
   }, [inputValue, navigate]);
 
@@ -63,7 +66,7 @@ function ArtistGrid() {
         ArtistService.fetchPaginated({
           limit: PAGE_SIZE,
           offset: pageParam,
-          name: query.trim() || undefined,
+          name: query?.trim() || undefined,
         }),
       initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => {
@@ -76,7 +79,7 @@ function ArtistGrid() {
   const artists = data ? data.pages.flatMap((page) => page.data) : [];
   const nothingFound = !isLoading && artists.length === 0;
 
-  if (isLoading) return <LoaderPage />;
+  if (isLoading) return <ArtistSkeletonGrid count={8} />;
   if (isError) return <ErrorPage message={error.message} />;
 
   return (
@@ -96,7 +99,7 @@ function ArtistGrid() {
         <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
           <span className="text-4xl mb-2">😕</span>
           <span className="text-lg font-semibold">
-            {query.trim()
+            {query?.trim()
               ? `No artists found for "${query}"`
               : "No artists found."}
           </span>
@@ -106,11 +109,7 @@ function ArtistGrid() {
           dataLength={artists.length}
           next={fetchNextPage}
           hasMore={!!hasNextPage}
-          loader={
-            <div className="text-center py-4 text-sm text-muted-foreground">
-              Loading more artists...
-            </div>
-          }
+          loader={<LoaderPage />}
           endMessage={
             <div className="text-center py-4 text-sm text-muted-foreground">
               No more artists.
@@ -146,6 +145,37 @@ function ArtistGrid() {
           </div>
         </InfiniteScroll>
       )}
+    </>
+  );
+}
+
+function ArtistSkeletonGrid({ count = 8 }) {
+  return (
+    <>
+      <div>
+        <Skeleton className="w-full h-8" />
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {Array.from({ length: count }).map((_, i) => (
+          <Card
+            key={i}
+            className="hover:shadow-lg transition-shadow duration-300"
+          >
+            <CardHeader className="flex flex-col items-center text-center">
+              <Skeleton className="w-24 h-24 rounded-full mb-2" />
+              <CardTitle>
+                <Skeleton className="w-20 h-4 mb-1" />
+              </CardTitle>
+              <CardDescription>
+                <Skeleton className="w-16 h-3" />
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="text-sm text-center">
+              <Skeleton className="w-24 h-6 mx-auto" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </>
   );
 }

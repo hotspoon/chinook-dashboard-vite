@@ -1,3 +1,4 @@
+import { ErrorPage } from "@/components/common/error-page";
 import { NotFoundPage } from "@/components/common/not-found-page";
 import { Toaster } from "@/components/ui/sonner";
 import type { AuthContext } from "@/context/AuthContext";
@@ -41,5 +42,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         <NotFoundPage />
       </>
     );
+  },
+  errorComponent: ({ error }) => {
+    return <ErrorPage message={error.message} stack={error.stack} />;
   },
 });

@@ -18,7 +18,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import type { AppData } from "@/schema/navigation.schema";
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 
 // This is sample data.
 const data: AppData = {
@@ -92,6 +92,7 @@ const data: AppData = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const location = useLocation();
   return (
     <Sidebar {...props}>
       <SidebarContent className="gap-0">
@@ -116,10 +117,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <CollapsibleContent>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {item.items.map((item) => (
-                      <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild isActive={item.isActive}>
-                          <Link to={item.url}>{item.title}</Link>
+                    {item.items.map((child) => (
+                      <SidebarMenuItem key={child.title}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={location.pathname === child.url} // ✅ Match current path
+                        >
+                          <Link to={child.url}>{child.title}</Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}

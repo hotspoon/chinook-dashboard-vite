@@ -3,6 +3,7 @@ import { QueryClient } from "@tanstack/react-query";
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      retry: false, // Disable automatic retries on failure
       refetchOnWindowFocus: false, // Don't refetch when window regains focus
       refetchOnReconnect: false, // Don't refetch when reconnecting to the network
       refetchOnMount: false, // Don't refetch when component mounts

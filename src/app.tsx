@@ -14,10 +14,8 @@ export function App() {
   return (
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        {/* <AuthProvider> */}
         <InnerApp />
         <ReactQueryDevtools initialIsOpen={false} />
-        {/* </AuthProvider> */}
       </QueryClientProvider>
     </StrictMode>
   );
