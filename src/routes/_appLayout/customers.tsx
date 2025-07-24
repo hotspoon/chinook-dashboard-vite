@@ -6,6 +6,7 @@ import { ErrorPage } from "@/components/common/error-page";
 import { LoaderPage } from "@/components/common/loader-page";
 import { useQuery } from "@tanstack/react-query";
 import type { Customer } from "@/schema/customer.schema";
+import PageTitle from "@/components/common/page-title";
 
 export const Route = createFileRoute("/_appLayout/customers")({
   component: RouteComponent,
@@ -14,10 +15,8 @@ export const Route = createFileRoute("/_appLayout/customers")({
 function RouteComponent() {
   return (
     <>
-      <div className="space-y-4">
-        <h1 className="text-2xl font-bold">Customers Page</h1>
-        <CustomersPage />
-      </div>
+      <PageTitle>Customers Page</PageTitle>
+      <CustomersPage />
     </>
   );
 }
@@ -37,9 +36,5 @@ function CustomersPage() {
   }
 
   if (error instanceof Error) return <ErrorPage message={error.message} />;
-  return (
-    <div className="flex-1 min-h-0 flex flex-col">
-      <DataTable columns={customerColumn} data={customers ?? []} />
-    </div>
-  );
+  return <DataTable columns={customerColumn} data={customers ?? []} />;
 }

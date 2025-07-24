@@ -82,10 +82,6 @@ const data: AppData = {
           title: "Employees",
           url: "/employees",
         },
-        {
-          title: "Reports",
-          url: "/reports",
-        },
       ],
     },
   ],

@@ -31,7 +31,11 @@ function AppLayoutComponent() {
           <Header />
 
           <div className="flex flex-1 flex-col gap-4 p-4">
-            <Outlet />
+            <div className="@container/main">
+              <div className="space-y-4">
+                <Outlet />
+              </div>
+            </div>
           </div>
           <Footer />
         </SidebarInset>

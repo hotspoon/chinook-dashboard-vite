@@ -15,6 +15,7 @@ import { z } from "zod";
 import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Skeleton } from "@/components/ui/skeleton";
+import PageTitle from "@/components/common/page-title";
 
 const artistSearchSchema = z.object({
   query: z.string().trim().optional(),
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/_appLayout/artists")({
 function RouteComponent() {
   return (
     <>
-      <h1>Artists Page</h1>
+      <PageTitle>Artists Page</PageTitle>
       <ArtistGrid />
     </>
   );

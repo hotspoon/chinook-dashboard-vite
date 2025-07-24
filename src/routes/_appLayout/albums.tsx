@@ -5,6 +5,7 @@ import type { Album } from "@/schema/album.schema";
 import { LoaderPage } from "@/components/common/loader-page";
 import { ErrorPage } from "@/components/common/error-page";
 import { queryClient } from "@/lib/queryClients";
+import PageTitle from "@/components/common/page-title";
 
 export const Route = createFileRoute("/_appLayout/albums")({
   component: RouteComponent,
@@ -35,7 +36,7 @@ function RouteComponent() {
 
   return (
     <div>
-      <h1>Albums Page</h1>
+      <PageTitle>Artists Page</PageTitle>
       <p>This is the albums page.</p>
 
       {albums && albums.length > 0 ? (

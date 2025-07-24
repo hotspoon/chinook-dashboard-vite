@@ -15,7 +15,6 @@ import { Route as AppLayoutIndexRouteImport } from './routes/_appLayout/index'
 import { Route as AuthLayoutSignUpRouteImport } from './routes/_authLayout/sign-up'
 import { Route as AuthLayoutLoginRouteImport } from './routes/_authLayout/login'
 import { Route as AppLayoutTracksRouteImport } from './routes/_appLayout/tracks'
-import { Route as AppLayoutReportsRouteImport } from './routes/_appLayout/reports'
 import { Route as AppLayoutPlaylistsRouteImport } from './routes/_appLayout/playlists'
 import { Route as AppLayoutMedia_typesRouteImport } from './routes/_appLayout/media_types'
 import { Route as AppLayoutInvoicesRouteImport } from './routes/_appLayout/invoices'
@@ -53,11 +52,6 @@ const AuthLayoutLoginRoute = AuthLayoutLoginRouteImport.update({
 const AppLayoutTracksRoute = AppLayoutTracksRouteImport.update({
   id: '/tracks',
   path: '/tracks',
-  getParentRoute: () => AppLayoutRouteRoute,
-} as any)
-const AppLayoutReportsRoute = AppLayoutReportsRouteImport.update({
-  id: '/reports',
-  path: '/reports',
   getParentRoute: () => AppLayoutRouteRoute,
 } as any)
 const AppLayoutPlaylistsRoute = AppLayoutPlaylistsRouteImport.update({
@@ -122,7 +116,6 @@ export interface FileRoutesByFullPath {
   '/invoices': typeof AppLayoutInvoicesRoute
   '/media_types': typeof AppLayoutMedia_typesRoute
   '/playlists': typeof AppLayoutPlaylistsRoute
-  '/reports': typeof AppLayoutReportsRoute
   '/tracks': typeof AppLayoutTracksRoute
   '/login': typeof AuthLayoutLoginRoute
   '/sign-up': typeof AuthLayoutSignUpRoute
@@ -139,7 +132,6 @@ export interface FileRoutesByTo {
   '/invoices': typeof AppLayoutInvoicesRoute
   '/media_types': typeof AppLayoutMedia_typesRoute
   '/playlists': typeof AppLayoutPlaylistsRoute
-  '/reports': typeof AppLayoutReportsRoute
   '/tracks': typeof AppLayoutTracksRoute
   '/login': typeof AuthLayoutLoginRoute
   '/sign-up': typeof AuthLayoutSignUpRoute
@@ -159,7 +151,6 @@ export interface FileRoutesById {
   '/_appLayout/invoices': typeof AppLayoutInvoicesRoute
   '/_appLayout/media_types': typeof AppLayoutMedia_typesRoute
   '/_appLayout/playlists': typeof AppLayoutPlaylistsRoute
-  '/_appLayout/reports': typeof AppLayoutReportsRoute
   '/_appLayout/tracks': typeof AppLayoutTracksRoute
   '/_authLayout/login': typeof AuthLayoutLoginRoute
   '/_authLayout/sign-up': typeof AuthLayoutSignUpRoute
@@ -178,7 +169,6 @@ export interface FileRouteTypes {
     | '/invoices'
     | '/media_types'
     | '/playlists'
-    | '/reports'
     | '/tracks'
     | '/login'
     | '/sign-up'
@@ -195,7 +185,6 @@ export interface FileRouteTypes {
     | '/invoices'
     | '/media_types'
     | '/playlists'
-    | '/reports'
     | '/tracks'
     | '/login'
     | '/sign-up'
@@ -214,7 +203,6 @@ export interface FileRouteTypes {
     | '/_appLayout/invoices'
     | '/_appLayout/media_types'
     | '/_appLayout/playlists'
-    | '/_appLayout/reports'
     | '/_appLayout/tracks'
     | '/_authLayout/login'
     | '/_authLayout/sign-up'
@@ -268,13 +256,6 @@ declare module '@tanstack/react-router' {
       path: '/tracks'
       fullPath: '/tracks'
       preLoaderRoute: typeof AppLayoutTracksRouteImport
-      parentRoute: typeof AppLayoutRouteRoute
-    }
-    '/_appLayout/reports': {
-      id: '/_appLayout/reports'
-      path: '/reports'
-      fullPath: '/reports'
-      preLoaderRoute: typeof AppLayoutReportsRouteImport
       parentRoute: typeof AppLayoutRouteRoute
     }
     '/_appLayout/playlists': {
@@ -361,7 +342,6 @@ interface AppLayoutRouteRouteChildren {
   AppLayoutInvoicesRoute: typeof AppLayoutInvoicesRoute
   AppLayoutMedia_typesRoute: typeof AppLayoutMedia_typesRoute
   AppLayoutPlaylistsRoute: typeof AppLayoutPlaylistsRoute
-  AppLayoutReportsRoute: typeof AppLayoutReportsRoute
   AppLayoutTracksRoute: typeof AppLayoutTracksRoute
   AppLayoutIndexRoute: typeof AppLayoutIndexRoute
 }
@@ -377,7 +357,6 @@ const AppLayoutRouteRouteChildren: AppLayoutRouteRouteChildren = {
   AppLayoutInvoicesRoute: AppLayoutInvoicesRoute,
   AppLayoutMedia_typesRoute: AppLayoutMedia_typesRoute,
   AppLayoutPlaylistsRoute: AppLayoutPlaylistsRoute,
-  AppLayoutReportsRoute: AppLayoutReportsRoute,
   AppLayoutTracksRoute: AppLayoutTracksRoute,
   AppLayoutIndexRoute: AppLayoutIndexRoute,
 }

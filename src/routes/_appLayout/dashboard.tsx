@@ -4,6 +4,7 @@ import { createFileRoute } from "@tanstack/react-router";
 // import { LoaderPage } from "@/components/common/loader-page"; // TODO
 // import { ErrorPage } from "@/components/common/error-page"; // TODO
 import { Skeleton } from "@/components/ui/skeleton";
+import PageTitle from "@/components/common/page-title";
 
 export const Route = createFileRoute("/_appLayout/dashboard")({
   component: Dashboard,
@@ -28,8 +29,7 @@ function Dashboard() {
 
   return (
     <>
-      <h1>Dashboard Page</h1>
-
+      <PageTitle>Dashboard Page</PageTitle>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
           <Skeleton className="aspect-video rounded-xl" />
