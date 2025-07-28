@@ -1,59 +1,151 @@
+import { useState, useEffect } from "react";
 import { AlbumService } from "@/services/album.service";
-import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query"; // Import useQuery
-import type { Album } from "@/schema/album.schema";
-import { LoaderPage } from "@/components/common/loader-page";
 import { ErrorPage } from "@/components/common/error-page";
-import { queryClient } from "@/lib/queryClients";
+import { LoaderPage } from "@/components/common/loader-page";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
 import PageTitle from "@/components/common/page-title";
+import { PAGE_SIZE } from "@/data/constant";
+
+const albumSearchSchema = z.object({
+  query: z.string().trim().optional(),
+});
 
 export const Route = createFileRoute("/_appLayout/albums")({
   component: RouteComponent,
-  loader: async () =>
-    queryClient.ensureQueryData({
-      queryKey: ["albums"],
-      queryFn: AlbumService.fetchAll,
-    }),
+  validateSearch: albumSearchSchema,
 });
 
 function RouteComponent() {
-  // The queryKey should match the one used in the loader.
-  const {
-    data: albums,
-    isLoading,
-    error,
-  } = useQuery<Album[]>({
-    queryKey: ["albums"],
-    queryFn:
-      AlbumService.fetchAll /* This can be omitted if you're sure the loader will always provide data,but it's safer to include it for consistency and potential re-fetches. */,
-  });
+  return (
+    <>
+      <PageTitle>Albums Page</PageTitle>
+      <AlbumGrid />
+    </>
+  );
+}
 
-  if (isLoading) {
-    return <LoaderPage />;
-  }
+function AlbumGrid() {
+  const { query } = Route.useSearch();
+  const navigate = Route.useNavigate();
+  const [inputValue, setInputValue] = useState(() => query ?? "");
 
-  if (error instanceof Error) return <ErrorPage message={error.message} />;
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const newQuery = inputValue.trim();
+      navigate({
+        search: (prev = {}) => {
+          const currentQuery = (prev.query || "").trim();
+          if (newQuery === currentQuery) return prev;
+
+          return newQuery
+            ? { ...prev, query: newQuery }
+            : (({ query, ...rest }) => rest)(prev);
+        },
+      });
+    }, 300);
+
+    return () => clearTimeout(handler);
+  }, [inputValue, navigate]);
+
+  const { data, isLoading, isError, error, fetchNextPage, hasNextPage } =
+    useInfiniteQuery({
+      queryKey: ["albums", query],
+      queryFn: async ({ pageParam = 0 }) =>
+        AlbumService.fetchPaginated({
+          limit: PAGE_SIZE,
+          offset: pageParam,
+          name: query?.trim() || undefined,
+        }),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage, allPages) => {
+        if (!lastPage.hasMore || lastPage.data.length === 0) return undefined;
+        return allPages.length * PAGE_SIZE;
+      },
+      refetchOnWindowFocus: false,
+    });
+
+  const albums = data ? data.pages.flatMap((page) => page.data) : [];
+  const nothingFound = !isLoading && albums.length === 0;
+
+  if (isLoading) return <LoaderPage />;
+  if (isError) return <ErrorPage message={error.message} />;
 
   return (
-    <div>
-      <PageTitle>Artists Page</PageTitle>
-      <p>This is the albums page.</p>
+    <>
+      <div>
+        <Input
+          type="text"
+          placeholder="Search albums..."
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          className="mb-2 p-1 border rounded"
+          autoFocus
+        />
+      </div>
 
-      {albums && albums.length > 0 ? (
-        <ul>
-          {albums.map((album) => (
-            <li key={album.id}>
-              <h3>{album.title}</h3>
-              <p>Artist: {album.artist_name}</p>
-            </li>
-          ))}
-        </ul>
+      {nothingFound ? (
+        <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+          <span className="text-4xl mb-2">😕</span>
+          <span className="text-lg font-semibold">
+            {query?.trim()
+              ? `No albums found for "${query}"`
+              : "No albums found."}
+          </span>
+        </div>
       ) : (
-        <p>No albums found.</p>
+        <InfiniteScroll
+          dataLength={albums.length}
+          next={fetchNextPage}
+          hasMore={!!hasNextPage}
+          loader={<LoaderPage />}
+          endMessage={
+            <div className="text-center py-4 text-sm text-muted-foreground">
+              No more albums.
+            </div>
+          }
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {albums.map((album) =>
+              album ? (
+                <Card
+                  key={album.id}
+                  className="hover:shadow-lg transition-shadow duration-300"
+                >
+                  <CardHeader className="flex flex-col items-center text-center">
+                    <img
+                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                        album.title,
+                      )}&background=random&size=128`}
+                      alt={album.title}
+                      className="w-24 h-24 rounded-full object-cover mb-2"
+                    />
+                    <CardTitle className="text-lg font-semibold">
+                      {album.title}
+                    </CardTitle>
+                    <CardDescription>Musician</CardDescription>
+                  </CardHeader>
+                  <CardContent className="text-sm text-center">
+                    <button className="mt-2 px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 hover:cursor-pointer transition-colors duration-200">
+                      View Details
+                    </button>
+                  </CardContent>
+                </Card>
+              ) : null,
+            )}
+          </div>
+        </InfiniteScroll>
       )}
-
-      {/* You can add more features here, e.g., a button to add a new album */}
-      {/* <button onClick={() => console.log("Add new album")}>Add Album</button> */}
-    </div>
+    </>
   );
 }

@@ -1,7 +1,18 @@
-import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { authCheck } from "@/lib/auth/auth";
+import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authLayout")({
   component: AuthLayoutComponent,
+  beforeLoad: async () => {
+    const isAuthenticated = await authCheck();
+    console.log(isAuthenticated);
+
+    if (isAuthenticated) {
+      throw redirect({
+        to: "/dashboard",
+      });
+    }
+  },
 });
 
 function AuthLayoutComponent() {

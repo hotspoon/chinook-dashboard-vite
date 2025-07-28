@@ -1,6 +1,6 @@
 export type Artist = {
-  ID: number;
-  Name: string;
+  id: number;
+  name: string;
 };
 
 export interface PaginatedArtistsResponse {

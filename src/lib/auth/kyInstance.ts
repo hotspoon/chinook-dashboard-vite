@@ -17,7 +17,7 @@ const kyInstance = ky.create({
       },
     ],
     afterResponse: [
-      async (request, options, response) => {
+      async (_request, _options, response) => {
         if (!response.ok) {
           const errorBody = (await response.json().catch(() => ({}))) as {
             error?: string;

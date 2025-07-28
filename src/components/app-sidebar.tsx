@@ -119,7 +119,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                           asChild
                           isActive={location.pathname === child.url} // ✅ Match current path
                         >
-                          <Link to={child.url}>{child.title}</Link>
+                          <Link to={child.url} preload={false}>
+                            {child.title}
+                          </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}

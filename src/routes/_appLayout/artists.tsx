@@ -16,12 +16,11 @@ import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Skeleton } from "@/components/ui/skeleton";
 import PageTitle from "@/components/common/page-title";
+import { PAGE_SIZE } from "@/data/constant";
 
 const artistSearchSchema = z.object({
   query: z.string().trim().optional(),
 });
-
-const PAGE_SIZE = 50;
 
 export const Route = createFileRoute("/_appLayout/artists")({
   component: RouteComponent,
@@ -120,19 +119,19 @@ function ArtistGrid() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {artists.map((artist) => (
               <Card
-                key={artist.ID}
+                key={artist.id}
                 className="hover:shadow-lg transition-shadow duration-300"
               >
                 <CardHeader className="flex flex-col items-center text-center">
                   <img
                     src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
-                      artist.Name,
+                      artist.name,
                     )}&background=random&size=128`}
-                    alt={artist.Name}
+                    alt={artist.name}
                     className="w-24 h-24 rounded-full object-cover mb-2"
                   />
                   <CardTitle className="text-lg font-semibold">
-                    {artist.Name}
+                    {artist.name}
                   </CardTitle>
                   <CardDescription>Musician</CardDescription>
                 </CardHeader>

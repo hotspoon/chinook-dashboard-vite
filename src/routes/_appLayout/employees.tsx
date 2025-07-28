@@ -1,5 +1,6 @@
 import { ErrorPage } from "@/components/common/error-page";
 import { LoaderPage } from "@/components/common/loader-page";
+import PageTitle from "@/components/common/page-title";
 import { columns as employeeColumn } from "@/components/employees/columns";
 import { DataTable } from "@/components/ui/datatable/data-table";
 import { queryClient } from "@/lib/queryClients";
@@ -22,7 +23,7 @@ export const Route = createFileRoute("/_appLayout/employees")({
 function RouteComponent() {
   return (
     <>
-      <h1 className="mb-4">Employees Page</h1>
+      <PageTitle>Employees Page</PageTitle>
       <EmployeesPage />
     </>
   );
